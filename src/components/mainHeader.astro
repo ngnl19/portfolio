@@ -3,8 +3,8 @@ import NavBar from '../components/navBar.astro';
 import '../style/global.css';
 
 interface Props {
-    title?: string | undefined;
-    description?: string | undefined;
+    title?: string;
+    description?: string;
 }
 
 const {
@@ -13,49 +13,65 @@ const {
 } = Astro.props;
 ---
 
-<meta charset="UTF-8" />
-<meta name="description" property="og:description" content={description} />
-<meta name="viewport" content="width=device-width" />
-<meta name="generator" content={Astro.generator} />
-<title>{title}</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content={description} />
+  <meta property="og:description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{title}</title>
 
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-<style>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  
+  <style>
     .main-header {
-        position: sticky;
-        top: 0;
-        width: 100%;
-        z-index: 9999;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 9999;
     }
     .main-header :global(.site-header) {
-        border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
-</style>
+  </style>
+</head>
 
-<script is:inline>
-	const getThemePreference = () => {
-		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-			return localStorage.getItem('theme');
-		}
-		return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-	};
+<body>
+  <header class="main-header">
+    <NavBar />
+  </header>
 
-	const theme = getThemePreference();
-	document.documentElement.setAttribute('data-theme', theme);
+  <slot />
 
-	if (typeof localStorage !== 'undefined') {
-		const observer = new MutationObserver(() => {
-			const theme = document.documentElement.getAttribute('data-theme');
-			localStorage.setItem('theme', theme);
-		});
+  <script is:inline>
+    const getThemePreference = () => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
 
-		observer.observe(document.documentElement, {
-			attributes: true,
-			attributeFilter: ['data-theme']
-		});
-	}
-</script>
+    const theme = getThemePreference();
+    document.documentElement.setAttribute('data-theme', theme);
+
+    if (typeof localStorage !== 'undefined') {
+      const observer = new MutationObserver(() => {
+        const theme = document.documentElement.getAttribute('data-theme');
+        localStorage.setItem('theme', theme);
+      });
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+      });
+    }
+  </script>
+</body>
+</html>
