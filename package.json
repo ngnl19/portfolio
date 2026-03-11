@@ -12,6 +12,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.36.4",
     "astro": "^6.0.2",
     "resend": "^6.9.3"
   }

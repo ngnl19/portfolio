@@ -1,0 +1,348 @@
+---
+interface Props {
+  name?: string;
+  title?: string;
+  description?: string;
+  birthDate?: string;
+  birthPlace?: string;
+  experience?: string;
+  education?: Array<{
+    period: string;
+    degree: string;
+    school: string;
+  }>;
+  experience_work?: Array<{
+    period: string;
+    role: string;
+    company: string;
+  }>;
+  imageSrc?: string;
+}
+
+const {
+  name = "Mark Andrew Duza",
+  title = "There is nothing so useless as doing efficiently that which should not be done at all.",
+  description = "Hi, I'm Andrew – a flexible individual who is an experienced freelance programmer, tutor, and virtual assistant with well-developed skills and experience in each aspect, such as developing software, encoding data, and many more. I am also a good communicator with proven interpersonal skills and am used to dealing with problems in a resourceful manner and negotiating to achieve beneficial agreements.",
+  birthDate = "19 Feb, 2003",
+  birthPlace = "Philippines",
+  experience = "3+ Years",
+  education = [
+    {
+      period: "2020 - 2022",
+      degree: "Mobile App and Web Development",
+      school: "STI College Ortigas-Cainta"
+    },
+    {
+      period: "2022 – 2023",
+      degree: "Bachelors of Science in Information Technology",
+      school: "STI College Ortigas-Cainta"
+    },
+  ],
+  experience_work = [
+    {
+      period: "2022 - 2023",
+      role: "Developer",
+      company: "ALPHA (Alliance of Leading Programmers through Heuristic Adaptation)"
+    },
+    {
+      period: "2020 – 2022",
+      role: "President",
+      company: "DONAT (Developer of Next Advance Technology)"
+    },
+    {
+      period: "2020 – 2021",
+      role: "Marketing Executive",
+      company: "BossJobsPH"
+    },
+    {
+      period: "2023 – 2025",
+      role: "Virtual Assistant",
+      company: "BossJobsPH"
+    },
+  ],
+  imageSrc = "/assets/portrait.jpg"
+} = Astro.props;
+---
+
+<section class="about" id="about">
+  <div class="container about-grid">
+    
+    <!-- LEFT: Content -->
+    <div class="about-content">
+      <h2 class="about-title">About Me</h2>
+      <p class="about-subtitle">"{title}" -Peter Drucker</p>
+      
+      <p class="about-description">{description}</p>
+      
+      <div class="about-image-wrapper">
+        <img src={imageSrc} alt={name} class="about-image" />
+      </div>
+    </div>
+
+    <!-- RIGHT: Info Cards -->
+    <div class="about-info">
+      
+      <!-- Education -->
+      <div class="info-card">
+        <div class="info-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>
+        </div>
+        <h3>Education</h3>
+        <div class="timeline">
+          {education.map((edu) => (
+            <div class="timeline-item">
+              <span class="period">{edu.period}</span>
+              <h4>{edu.degree}</h4>
+              <p>{edu.school}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Experience -->
+      <div class="info-card">
+        <div class="info-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+        </div>
+        <h3>Experience</h3>
+        <div class="timeline">
+          {experience_work.map((exp) => (
+            <div class="timeline-item">
+              <span class="period">{exp.period}</span>
+              <h4>{exp.role}</h4>
+              <p>{exp.company}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Personal Info -->
+      <div class="personal-info">
+        <div class="info-row">
+          <span class="label">Born in:</span>
+          <span class="value highlight">{birthPlace}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Date of Birth:</span>
+          <span class="value">{birthDate}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Experience</span>
+          <span class="value highlight">{experience}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    padding: 100px 0;
+    background-color: var(--bg);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  /* LEFT SIDE */
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .about-title {
+    font-family: var(--font-main);
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 0;
+  }
+
+  .about-subtitle {
+    font-family: var(--font-text);
+    font-size: 1.1rem;
+    color: var(--text);
+    opacity: 0.8;
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  .about-description {
+    font-family: var(--font-text);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text);
+    opacity: 0.9;
+  }
+
+  .about-image-wrapper {
+    position: relative;
+    margin-top: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 2px;
+    box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  .about-image {
+    width: 100%;
+    height: 630px;
+    display: block;
+    border-radius: 20px;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: bottom;
+  }
+
+  /* RIGHT SIDE */
+  .about-info {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .info-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  }
+
+  .info-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(249, 115, 22, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    margin-bottom: 20px;
+  }
+
+  .info-card h3 {
+    font-family: var(--font-main);
+    font-size: 1.5rem;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-left: 20px;
+    border-left: 2px solid var(--border);
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 4px;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+  }
+
+  .period {
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .timeline-item h4 {
+    font-family: var(--font-main);
+    font-size: 1rem;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .timeline-item p {
+    font-family: var(--font-text);
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
+  }
+
+  /* Personal Info */
+  .personal-info {
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 25px 25px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-text);
+    font-size: 0.95rem;
+  }
+
+  .label {
+    color: var(--text);
+    opacity: 0.7;
+  }
+
+  .value {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .value.highlight {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 968px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .about-title {
+      font-size: 2rem;
+    }
+
+    img {
+        object-position: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .info-card {
+      padding: 20px;
+    }
+
+    .about-title {
+      font-size: 1.75rem;
+    }
+  }
+</style>

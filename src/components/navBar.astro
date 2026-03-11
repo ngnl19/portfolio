@@ -2,8 +2,8 @@
 import ThemeToggle from '../components/themeToggle.astro';
 
 const navLinks = [
-    { label: 'HOME', href: '/' },
-    { label: 'ABOUT ME', href: '#' },
+    { label: 'HOME', href: '#home' },
+    { label: 'ABOUT ME', href: '#about' },
     { label: 'SKILLS', href: '#' },
     { label: 'BLOG', href: '#' },
 ];
@@ -22,7 +22,7 @@ const isCurrentPage = (href: string) => {
     <div class="container header-inner">
         <!-- LEFT: Logo + Brand -->
         <div class="brand">
-            <a class="brand-name" href="/"><span class="gradient-text">ANDREW</span>.Dev</a>
+            <a class="brand-name" href="#"><span class="gradient-text">ANDREW</span>.Dev</a>
         </div>
 
         <!-- RIGHT: Nav + CTA -->
@@ -81,6 +81,13 @@ const isCurrentPage = (href: string) => {
     .site-header {
         width: 100%;
         background: var(--bg);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px rgba(50, 50, 50, 0.343);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
         transition: background 0.3s ease;
     }
 

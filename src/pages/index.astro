@@ -1,6 +1,20 @@
 ---
 import BaseLayout from "../layouts/baseLayout.astro";
+import Hero from "../components/hero.astro";
+import About from "../components/about.astro";
+
+const titles = ["Mark Andrew", "a Developer", "a Freelancer", "a Tutor", "a Virtual Assistant"];
 ---
 
 <BaseLayout>
+  <Hero
+    titles={titles}
+    tagline="If I'm doing something, I'm doing it at 100% or not doing it at all."
+    align="start"
+    tags={["Developer", "Freelancer", "Tutor", "Virtual Assistant"]}
+  />
+  
+  <About 
+    imageSrc="/assets/about.jpg"
+  />
 </BaseLayout>

@@ -1,10 +1,26 @@
 export const prerender = false;
 
 import { Resend } from "resend";
+import { ratelimit } from '../../lib/ratelimit';
 
 const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export async function POST({ request }: { request: Request }) {
+
+  const ip =
+    request.headers.get("x-forwarded-for") ||
+    request.headers.get("cf-connecting-ip") ||
+    "anonymous";
+
+  const { success } = await ratelimit.limit(ip);
+
+  if (!success) {
+    return new Response(
+      JSON.stringify({ error: "Too many requests" }),
+      { status: 429 }
+    );
+  }
+
   const data = await request.json();
 
   await resend.emails.send({

@@ -1,0 +1,241 @@
+---
+interface Props {
+  titles: string[];
+  tagline?: string;
+  align?: "start" | "center";
+  tags?: string[];
+}
+
+const { align = "center", tagline, titles, tags = [] } = Astro.props;
+---
+
+<section class="hero" id="home">
+  <div class="container hero-grid">
+
+    <div class={`hero-text align-${align}`}>
+      <h1>
+        Hi, I'm
+        <span class="typing-container">
+          <span id="typing-name" data-titles={JSON.stringify(titles)}></span>
+          <span class="typing-measure aria-hidden=true"></span>
+        </span>
+      </h1>
+
+      {tagline && <p class="tagline">{tagline}</p>}
+
+      {tags.length > 0 && (
+        <div class="hero-tags">
+          {tags.map((tag) => (
+            <span class="tag">{tag}</span>
+          ))}
+        </div>
+      )}
+      <a href="/csv/cv.pdf" download class="download-btn">
+        Download CV
+      </a>
+    </div>
+
+    <div class="hero-image">
+      <img src="/assets/portrait.png" alt="Hero Image" />
+    </div>
+
+  </div>
+</section>
+
+<style>
+
+.hero {
+  padding: 100px 0;
+  background-color: var(--bg);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+}
+
+/* TEXT */
+
+.hero-text {
+  margin-left: 40px;
+}
+
+.hero-text h1 {
+  font-family: var(--font-main);
+  font-size: 3rem;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.tagline {
+  font-family: var(--font-text);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--text);
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+/* TAG CONTAINER */
+
+.hero-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* TAG STYLE */
+
+.tag {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 0.95rem;
+  font-family: var(--font-text);
+  color: var(--text);
+  background: rgba(0,0,0,0.05);
+  line-height: 1;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+
+.tag:hover {
+    font-weight: bolder;
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.download-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: white;
+  font-family: var(--font-main);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: 0.25s ease;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* ALIGNMENT */
+
+.align-start {
+  text-align: left;
+}
+
+.align-center {
+  text-align: center;
+}
+
+/* IMAGE */
+
+.hero-image img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 25px;
+  box-shadow: 2px;
+  box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.5);
+}
+
+#typing-name::after {
+  content: "|";
+  font-weight: 100;
+  margin-left: 5px;
+  animation: blink 1s infinite;
+}
+
+.typing-container {
+  display: inline-block;
+  position: relative;
+}
+
+.typing-measure {
+  visibility: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .hero-image {
+    order: -1;
+  }
+
+  .download-btn {
+    width: 30%;
+    display: block;
+    text-align: center;
+    margin: 20px auto 0;
+  }
+
+  .hero-tags {
+    justify-content: center;
+  }
+
+}
+
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const el = document.getElementById("typing-name") as HTMLElement;
+  const measure = document.querySelector(".typing-measure");
+  const titles = JSON.parse(el.dataset.titles as string);
+
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+  let titleIndex = 0;
+
+  const longestTitle = titles.reduce((a: string, b: string) => a.length > b.length ? a : b);
+  measure!.textContent = longestTitle;
+
+ function animateText(text: string) {
+    let iteration = 0;
+    const interval = setInterval(() => {
+      el.textContent = text
+        .split("")
+        .map((letter, index) => {
+          if (index < iteration) return text[index];
+          return chars[Math.floor(Math.random() * chars.length)];
+        })
+        .join("");
+
+      if (iteration >= text.length) {
+        clearInterval(interval);
+        setTimeout(() => {
+          titleIndex = (titleIndex + 1) % titles.length;
+          animateText(titles[titleIndex]);
+        }, 2000);
+      }
+      iteration += 1/3;
+    }, 30);
+  }
+
+  animateText(titles[titleIndex]);
+});
+</script>
