@@ -10,7 +10,7 @@ const navLinks = [
 
 const isCurrentPage = (href: string) => {
     if (href.startsWith('#')) return false;
-    let pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+    let pathname = Astro.url.pathname;
     if (pathname.at(0) !== '/') pathname = '/' + pathname;
     if (pathname.at(-1) !== '/') pathname += '/';
     return pathname === href || (href !== '/' && pathname.startsWith(href));
@@ -22,7 +22,7 @@ const isCurrentPage = (href: string) => {
     <div class="container header-inner">
         <!-- LEFT: Logo + Brand -->
         <div class="brand">
-            <a class="brand-name" href="#"><span class="gradient-text">ANDREW</span>.Dev</a>
+            <a class="brand-name" href="/"><span class="gradient-text">ANDREW</span>.Dev</a>
         </div>
 
         <!-- RIGHT: Nav + CTA -->
@@ -40,14 +40,19 @@ const isCurrentPage = (href: string) => {
                             </a>
                         </li>
                     ))}
+                    <!-- Mobile CTA - only shows in dropdown -->
+                    <li class="mobile-cta-item">
+                        <a href="#" class="btn-cta mobile-cta" id="openTalkMobile">LET'S TALK</a>
+                    </li>
                 </ul>
             </nav>
 
-            <a href="#" class="btn-cta" id="openTalk">LET'S TALK</a>
+            <a href="#" class="btn-cta desktop-cta" id="openTalk">LET'S TALK</a>
 
             <ThemeToggle />
 
             <button 
+                type="button"
                 class="mobile-toggle" 
                 id="mobileToggle" 
                 aria-label="Toggle navigation menu" 
@@ -62,14 +67,14 @@ const isCurrentPage = (href: string) => {
 <div class="talk-modal" id="talkModal">
     <div class="talk-modal-overlay" id="talkOverlay"></div>
     <div class="talk-modal-content">
-        <button class="career-back" id="closeTalk">⬅ BACK</button>
+        <button type="button" class="career-back" id="closeTalk">⬅ BACK</button>
         <div class="talk-modal-body">
             <h2>Send Me a Message</h2>
             <p>Have any suggestions or need any help? I'd love to hear from you.</p>
 
             <form class="talk-form" id="talkForm">
                 <input type="text" name="name" autocomplete="off" placeholder="Your Name" required>
-                <input type="text" name="email" autocomplete="off" placeholder="Your Email" required>
+                <input type="email" name="email" autocomplete="off" placeholder="Your Email" required>
                 <textarea name="message" autocomplete="off" rows="5" placeholder="Your Message" required></textarea>
                 <button type="submit" class="talk-submit-btn">Submit</button>
             </form>
@@ -144,18 +149,18 @@ const isCurrentPage = (href: string) => {
     }
 
     .nav-list a {
-    position: relative;
-    display: inline-block;
-    align-items: center;
-    padding: 12px 6px;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text);
-    text-decoration: none;
-    transition: color 0.3s ease, transform 0.3s ease;
-    font-family: var(--font-main);
+        position: relative;
+        display: inline-block;
+        align-items: center;
+        padding: 12px 6px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--text);
+        text-decoration: none;
+        transition: color 0.3s ease, transform 0.3s ease;
+        font-family: var(--font-main);
     }
 
     /* Lobster font hover effect */
@@ -198,6 +203,16 @@ const isCurrentPage = (href: string) => {
         opacity: 0.9;
     }
 
+    /* Mobile CTA hidden by default */
+    .mobile-cta-item {
+        display: none;
+    }
+
+    .mobile-cta {
+        display: inline-block;
+        margin-top: 10px;
+    }
+
     .mobile-toggle {
         display: none;
         color: var(--text);
@@ -210,72 +225,83 @@ const isCurrentPage = (href: string) => {
     }
 
     .talk-modal {
-    position: fixed;
-    inset: 0;
-    display: none;
-    z-index: 99999;
+        position: fixed;
+        inset: 0;
+        display: none;
+        z-index: 99999;
     }
 
     /* BACK BUTTON */
     .career-back {
-    background: var(--primary);
-    border: none;
-    padding: 8px 18px;
-    border-radius: 999px;
-    font-family: var(--font-text);
-    color: var(--text);
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-bottom: 30px;
+        background: var(--primary);
+        border: none;
+        padding: 8px 18px;
+        border-radius: 999px;
+        font-family: var(--font-text);
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 30px;
     }
 
     .talk-modal.active {
-    display: block;
+        display: block;
     }
 
     .talk-modal-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
     }
 
     .talk-modal-content {
-    position: relative;
-    max-width: 700px;
-    width: 90%;
-    margin: 80px auto;
-    background: var(--bg);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-    padding: 40px;
-    border: 1px solid var(--border);
-    z-index: 2;
-    animation: modalFade 0.3s ease;
+        position: relative;
+        max-width: 700px;
+        width: 90%;
+        margin: 80px auto;
+        background: var(--bg);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+        border-radius: 20px;
+        padding: 40px;
+        border: 1px solid var(--border);
+        z-index: 2;
+        animation: modalFade 0.3s ease;
+    }
+
+    @keyframes modalFade {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .talk-modal-body h2 {
-    font-family: var(--font-main);
-    font-size: 28px;
-    margin-bottom: 10px;
+        font-family: var(--font-main);
+        font-size: 28px;
+        margin-bottom: 10px;
     }
 
     .talk-modal-body p {
-    font-family: var(--font-text);
-    margin-bottom: 30px;
-    opacity: 0.85;
+        font-family: var(--font-text);
+        margin-bottom: 30px;
+        opacity: 0.85;
     }
 
-    .talk-modal-body h2, p {
+    .talk-modal-body h2, .talk-modal-body p {
         color: var(--text);
     }
 
     /* FORM */
     .talk-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
     }
 
     textarea {
@@ -285,49 +311,49 @@ const isCurrentPage = (href: string) => {
 
     .talk-form input,
     .talk-form textarea {
-    padding: 14px 18px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-text);
+        padding: 14px 18px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-text);
     }
 
     .talk-submit-btn {
-    background: var(--primary);
-    color: #ffffff;
-    padding: 12px 26px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    align-self: flex-start;
-    transition: 0.3s ease;
+        background: var(--primary);
+        color: #ffffff;
+        padding: 12px 26px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        align-self: flex-start;
+        transition: 0.3s ease;
     }
 
     .talk-submit-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
+        opacity: 0.9;
+        transform: translateY(-2px);
     }
 
     .toast {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: var(--bg);
-    color: var(--text);
-    padding: 14px 20px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    font-family: var(--font-text);
-    font-size: 14px;
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: none;
-    transition: 0.3s ease;
-    z-index: 999999;
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: var(--bg);
+        color: var(--text);
+        padding: 14px 20px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        font-family: var(--font-text);
+        font-size: 14px;
+        opacity: 0;
+        transform: translateY(20px);
+        pointer-events: none;
+        transition: 0.3s ease;
+        z-index: 999999;
     }
 
     .toast.show {
@@ -337,10 +363,10 @@ const isCurrentPage = (href: string) => {
 
     /* MOBILE */
     @media (max-width: 768px) {
-    .talk-modal-content {
-        margin: 40px auto;
-        padding: 25px;
-    }
+        .talk-modal-content {
+            margin: 40px auto;
+            padding: 25px;
+        }
     }
 
     /* Mobile Styles */
@@ -364,13 +390,37 @@ const isCurrentPage = (href: string) => {
             transform: translateY(-150%);
             transition: transform 0.3s ease;
             z-index: 9998;
+            align-items: center;
         }
 
         .nav-list.active {
             transform: translateY(0);
         }
 
-        .btn-cta {
+        .nav-list li {
+            width: 100%;
+            text-align: center;
+        }
+
+        .nav-list a {
+            display: block;
+            padding: 15px;
+        }
+
+        /* Show mobile CTA in dropdown */
+        .mobile-cta-item {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .mobile-cta {
+            display: inline-block;
+            padding: 12px 30px;
+            font-size: 14px;
+        }
+
+        /* Hide desktop CTA */
+        .desktop-cta {
             display: none;
         }
 
@@ -397,63 +447,77 @@ const isCurrentPage = (href: string) => {
 
 <script>
     // Mobile navigation functionality
-    (function() {
+    document.addEventListener('DOMContentLoaded', function() {
         const mobileToggle = document.getElementById("mobileToggle");
         const navList = document.getElementById("navList");
 
-        if (!mobileToggle || !navList) return;
+        if (!mobileToggle || !navList) {
+            console.error('Mobile nav elements not found');
+            return;
+        }
 
-        const toggleMenu = () => {
-            const isActive = navList.classList.toggle("active");
-            mobileToggle.setAttribute("aria-expanded", String(isActive));
-            mobileToggle.textContent = isActive ? "✕" : "☰";
-            
-            // Prevent body scroll when menu is open
-            document.body.style.overflow = isActive ? 'hidden' : '';
+        let isMenuOpen = false;
+
+        const toggleMenu = function() {
+            isMenuOpen = !isMenuOpen;
+            navList.classList.toggle("active", isMenuOpen);
+            mobileToggle.setAttribute("aria-expanded", String(isMenuOpen));
+            mobileToggle.textContent = isMenuOpen ? "✕" : "☰";
+            document.body.style.overflow = isMenuOpen ? 'hidden' : '';
         };
 
-        mobileToggle.addEventListener("click", toggleMenu);
+        mobileToggle.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMenu();
+        });
 
         // Close menu when clicking a link
-        navList.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 1024 && navList.classList.contains('active')) {
+        const navLinks = navList.querySelectorAll('a');
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 1024 && isMenuOpen) {
                     toggleMenu();
                 }
             });
         });
 
         // Close on outside click
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', function(e) {
+            const target = e.target as Node;
+
+            if (!(target instanceof Node)) return;
+
             if (window.innerWidth <= 1024 && 
-                navList.classList.contains('active') &&
-                !navList.contains(e.target as Node) && 
-                !mobileToggle.contains(e.target as Node)) {
+                isMenuOpen &&
+                !navList.contains(target!) && 
+                !mobileToggle.contains(target)) {
                 toggleMenu();
             }
         });
 
         // Handle escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && navList.classList.contains('active')) {
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
                 toggleMenu();
             }
         });
 
         // Active section highlighting for anchor links
-        const updateActiveLink = () => {
+        const updateActiveLink = function() {
             const sections = document.querySelectorAll('section[id]');
             const scrollPos = window.scrollY + 100;
 
-            sections.forEach(section => {
-                const top = (section as HTMLElement).offsetTop;
-                const height = (section as HTMLElement).offsetHeight;
+            sections.forEach(function(section) {
+                const sectionEl = section as HTMLElement;
+                const top = sectionEl.offsetTop;
+                const height = sectionEl.offsetHeight;
                 const id = section.getAttribute('id');
 
                 if (scrollPos >= top && scrollPos < top + height) {
-                    navList.querySelectorAll('a').forEach(link => {
+                    navLinks.forEach(function(link) {
                         link.classList.remove('active');
-                        if (link.getAttribute('href') === `#${id}`) {
+                        if (link.getAttribute('href') === '#' + id) {
                             link.classList.add('active');
                         }
                     });
@@ -462,63 +526,84 @@ const isCurrentPage = (href: string) => {
         };
 
         window.addEventListener('scroll', updateActiveLink, { passive: true });
-        updateActiveLink(); // Initial call
-    })();
-
-    const openTalk = document.getElementById("openTalk");
-    const talkModal = document.getElementById("talkModal");
-    const closeTalk = document.getElementById("closeTalk");
-    const overlay = talkModal?.querySelector(".talk-modal-overlay");
-
-    if (openTalk && talkModal && closeTalk) {
-
-    openTalk.addEventListener("click", (e) => {
-        e.preventDefault();
-        talkModal.classList.add("active");
-        document.body.style.overflow = "hidden";
+        updateActiveLink();
     });
 
-    const closeModal = () => {
-        talkModal.classList.remove("active");
-        document.body.style.overflow = "";
-    };
+    // Talk modal functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const openTalk = document.getElementById("openTalk");
+        const openTalkMobile = document.getElementById("openTalkMobile");
+        const talkModal = document.getElementById("talkModal");
+        const closeTalk = document.getElementById("closeTalk");
 
-    closeTalk.addEventListener("click", closeModal);
-    overlay?.addEventListener("click", closeModal);
+        if (!talkModal || !closeTalk) {
+            console.error('Talk modal elements not found');
+            return;
+        }
 
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeModal();
+        const overlay = talkModal.querySelector(".talk-modal-overlay");
+
+        const openModal = function(e) {
+            if (e) e.preventDefault();
+            talkModal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        };
+
+        const closeModal = function() {
+            talkModal.classList.remove("active");
+            document.body.style.overflow = "";
+        };
+
+        if (openTalk) {
+            openTalk.addEventListener("click", openModal);
+        }
+        
+        if (openTalkMobile) {
+            openTalkMobile.addEventListener("click", openModal);
+        }
+        
+        closeTalk.addEventListener("click", closeModal);
+        
+        if (overlay) {
+            overlay.addEventListener("click", closeModal);
+        }
+
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Escape") closeModal();
+        });
     });
 
-    }
+    // Form functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById("talkForm") as HTMLFormElement;
+        const talkModal = document.getElementById("talkModal");
+        const toast = document.getElementById("toast");
 
-    const form = document.getElementById("talkForm") as HTMLFormElement;
-    const formModal = document.getElementById("talkModal");
-    const toast = document.getElementById("toast");
+        if (!form || !toast) {
+            console.error('Form elements not found');
+            return;
+        }
 
-    function showToast(message = "", success = true) {
-        toast!.textContent = message;
-        toast!.style.borderColor = success ? "#22c55e" : "#ef4444";
+        function showToast(message, success) {
+            toast.textContent = message;
+            toast.style.borderColor = success ? "#22c55e" : "#ef4444";
+            toast.classList.add("show");
 
-        toast!.classList.add("show")
+            setTimeout(function() {
+                toast.classList.remove("show");
+            }, 3000);
+        }
 
-        setTimeout(() => {
-            toast!.classList.remove("show");
-        }, 3000);
-    }
-
-    if (form) {
-        form.addEventListener("submit", async (e) => {
+        form.addEventListener("submit", async function(e) {
             e.preventDefault();
 
-            const submitBtn = form.querySelector(".talk-submit-btn") as HTMLButtonElement | null;
+            const submitBtn = form.querySelector(".talk-submit-btn") as HTMLButtonElement;
+            if (!submitBtn) return;
 
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = "Sending...";
-            }
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Sending...";
 
-            const data = Object.fromEntries(new FormData(form));
+            const data = Object.fromEntries(new FormData(form as HTMLFormElement));
 
             try {
                 const res = await fetch("./api/contact", {
@@ -530,30 +615,28 @@ const isCurrentPage = (href: string) => {
                 });
 
                 if (res.ok) {
-                    submitBtn!.textContent = "Sent ✓";
+                    submitBtn.textContent = "Sent ✓";
 
-                    setTimeout(() => {
-                        talkModal?.classList.remove("active");
-                        document.body.style.overflow = "";
+                    setTimeout(function() {
+                        if (talkModal) {
+                            talkModal.classList.remove("active");
+                            document.body.style.overflow = "";
+                        }
                         showToast("Message sent successfully!", true);
                         form.reset();
-                        submitBtn!.textContent = "Submit";
-                        submitBtn!.disabled = false;
+                        submitBtn.textContent = "Submit";
+                        submitBtn.disabled = false;
                     }, 800);
-                }
-                else {
-                    submitBtn!.textContent = "Submit";
-                    submitBtn!.disabled = false;
-
+                } else {
+                    submitBtn.textContent = "Submit";
+                    submitBtn.disabled = false;
                     showToast("Failed to send message.", false);
                 }
             } catch (err) {
-                submitBtn!.textContent = "Submit";
-                submitBtn!.disabled = false;
-
+                submitBtn.textContent = "Submit";
+                submitBtn.disabled = false;
                 showToast("Something went wrong.", false);
             }
         });
-    }
-
+    });
 </script>

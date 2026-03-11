@@ -17,7 +17,7 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
         Hi, I'm
         <span class="typing-container">
           <span id="typing-name" data-titles={JSON.stringify(titles)}></span>
-          <span class="typing-measure aria-hidden=true"></span>
+          <span class="typing-measure" aria-hidden="true"></span>
         </span>
       </h1>
 
@@ -43,10 +43,12 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
 </section>
 
 <style>
-
 .hero {
   padding: 100px 0;
   background-color: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 .hero-grid {
@@ -54,12 +56,13 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: 40px;
+  width: 100%;
 }
 
 /* TEXT */
 
 .hero-text {
-  margin-left: 40px;
+  margin-left: 50px;
 }
 
 .hero-text h1 {
@@ -67,6 +70,7 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
   font-size: 3rem;
   color: var(--text);
   margin-bottom: 20px;
+  line-height: 1.2;
 }
 
 .tagline {
@@ -140,19 +144,18 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
 
 /* IMAGE */
 
+.hero-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .hero-image img {
   width: 100%;
   max-width: 400px;
   border-radius: 25px;
-  box-shadow: 2px;
   box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.5);
-}
-
-#typing-name::after {
-  content: "|";
-  font-weight: 100;
-  margin-left: 5px;
-  animation: blink 1s infinite;
+  object-fit: cover;
 }
 
 .typing-container {
@@ -163,7 +166,17 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
 
 .typing-measure {
   visibility: hidden;
-  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+#typing-name::after {
+  content: "|";
+  font-weight: 100;
+  margin-left: 5px;
+  animation: blink 1s infinite;
 }
 
 #typing-name {
@@ -176,10 +189,9 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
   50% { opacity: 0; }
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE - Mobile Fixes (from old version) */
 
 @media (max-width: 768px) {
-
   .hero-grid {
     grid-template-columns: 1fr;
     text-align: center;
@@ -187,6 +199,19 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
 
   .hero-image {
     order: -1;
+  }
+
+  .hero-text {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .hero-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .tagline {
+    font-size: 0.5rem;
   }
 
   .download-btn {
@@ -200,28 +225,46 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
     justify-content: center;
   }
 
+  .tagline {
+    font-size: 1rem;
+    text-align: center;
+  }
 }
 
+/* Extra small screens */
+@media (max-width: 480px) {
+  .hero-text h1 {
+    font-size: 1.75rem;
+  }
+
+  .hero-image img {
+    max-width: 280px;
+  }
+}
 </style>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
-  const el = document.getElementById("typing-name") as HTMLElement;
+  const el = document.getElementById("typing-name");
   const measure = document.querySelector(".typing-measure") as HTMLElement;
-  const titles = JSON.parse(el.dataset.titles as string);
+  
+  if (!el || !measure) return;
+  
+  const titles = JSON.parse(el.dataset.titles || "[]");
+  if (!titles.length) return;
 
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
   let titleIndex = 0;
 
   const container = document.querySelector(".typing-container") as HTMLElement;
+  const longestTitle = titles.reduce((a, b) => a.length > b.length ? a : b);
+  measure.textContent = longestTitle;
+  
+  if (container) {
+    container!.style.width = measure!.offsetWidth + "px";
+  }
 
-  const longestTitle = titles.reduce((a: string, b: string) => a.length > b.length ? a : b);
-  measure!.textContent = longestTitle;
-
-  container!.style.width = measure!.offsetWidth + "px";
-
- function animateText(text: string) {
+  function animateText(text) {
     let iteration = 0;
     const interval = setInterval(() => {
       el.textContent = text
