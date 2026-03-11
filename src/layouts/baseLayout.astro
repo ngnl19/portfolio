@@ -1,0 +1,21 @@
+---
+import MainHead from '../components/mainHeader.astro';
+import NavBar from '../components/navBar.astro';
+
+interface Props {
+    title?: string | undefined;
+    description?: | undefined;
+}
+
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+    <head>
+        <MainHead title={title} description={description}></MainHead>
+    </head>
+    <body>
+        <NavBar />
+        <slot />
+    </body>
+</html>

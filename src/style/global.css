@@ -1,0 +1,72 @@
+html,
+body {
+  min-height: 100%;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+:root {
+  --font-main: "Ubuntu", sans-serif;
+  --font-text: "Public Sans", sans-serif;
+
+  --bg: #ffffff;
+  --text: #111111;
+  --primary: #f97316;
+  --border: #e5e5e5;
+
+  --gradient-start: #a4c8d9;
+  --gradient-mid: #59b6e1;
+  --gradient-end: #012b3e;
+
+  --gradient-background: linear-gradient(
+    90deg,
+    var(--gradient-start),
+    var(--gradient-mid),
+    var(--gradient-end)
+  );
+}
+
+[data-theme="dark"] {
+  --bg: #0f2b36;
+  --text: #ffffff;
+  --primary: #f97316;
+  --border: rgba(255, 255, 255, 0.15);
+
+  --gradient-start: #ffb86b;
+  --gradient-mid: #f97316;
+  --gradient-end: #ff6a00;
+
+  --gradient-background: linear-gradient(
+    90deg,
+    var(--gradient-start),
+    var(--gradient-mid),
+    var(--gradient-end)
+  );
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+section {
+  margin-bottom: 150px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
