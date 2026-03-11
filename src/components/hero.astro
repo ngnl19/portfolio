@@ -158,14 +158,17 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
 .typing-container {
   display: inline-block;
   position: relative;
+  white-space: nowrap;
 }
 
 .typing-measure {
   visibility: hidden;
-  position: absolute;
-  left: 0;
-  top: 0;
-  pointer-events: none;
+  display: inline-block;
+}
+
+#typing-name {
+  display: inline-block;
+  min-width: 1ch;
 }
 
 @keyframes blink {
@@ -204,15 +207,19 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
 document.addEventListener("DOMContentLoaded", () => {
 
   const el = document.getElementById("typing-name") as HTMLElement;
-  const measure = document.querySelector(".typing-measure");
+  const measure = document.querySelector(".typing-measure") as HTMLElement;
   const titles = JSON.parse(el.dataset.titles as string);
 
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
   let titleIndex = 0;
 
-  const longestTitle = titles.reduce((a: string, b: string) => a.length > b.length ? a : b);
+  const container = document.querySelector(".typing-container") as HTMLElement;
+
+  const longestTitle = titles.reduce((a, b) => a.length > b.length ? a : b);
   measure!.textContent = longestTitle;
+
+  container!.style.width = measure!.offsetWidth + "px";
 
  function animateText(text: string) {
     let iteration = 0;
