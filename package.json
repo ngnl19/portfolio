@@ -20,6 +20,6 @@
     "resend": "^6.9.3"
   },
   "devDependencies": {
-    "@types/node": "^25.4.0"cl
+    "@types/node": "^25.4.0"
   }
 }
