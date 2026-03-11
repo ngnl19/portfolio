@@ -233,13 +233,24 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
 
 /* Extra small screens */
 @media (max-width: 480px) {
+
   .hero-text h1 {
-    font-size: 1.75rem;
+    font-size: 1.45rem;
+  }
+
+  .tagline {
+    font-size: clamp(0.50rem, 0.70rem, 1rem);
   }
 
   .hero-image img {
     max-width: 280px;
   }
+
+  .download-btn {
+    font-size: clamp(0.60rem, 0.650rem, 1rem);
+    font-weight: bold;
+  }
+
 }
 </style>
 
