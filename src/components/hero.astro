@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const container = document.querySelector(".typing-container") as HTMLElement;
 
-  const longestTitle = titles.reduce((a, b) => a.length > b.length ? a : b);
+  const longestTitle = titles.reduce((a: string, b: string) => a.length > b.length ? a : b);
   measure!.textContent = longestTitle;
 
   container!.style.width = measure!.offsetWidth + "px";
