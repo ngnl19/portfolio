@@ -15,11 +15,11 @@
     "@astrojs/vercel": "^8.0.4",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.4",
-    "astro": "^6.0.3",
+    "astro": "^5.0.0",
     "dotenv": "^17.3.1",
     "resend": "^6.9.3"
   },
   "devDependencies": {
-    "@types/node": "^25.4.0"
+    "@types/node": "^25.4.0"cl
   }
 }
