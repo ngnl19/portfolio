@@ -1,4 +1,7 @@
 ---
+import portrait from '../assets/about.jpg'
+import { Image } from 'astro:assets';
+
 interface Props {
   name?: string;
   title?: string;
@@ -16,7 +19,6 @@ interface Props {
     role: string;
     company: string;
   }>;
-  imageSrc?: string;
 }
 
 const {
@@ -59,8 +61,7 @@ const {
       role: "Virtual Assistant",
       company: "BossJobsPH"
     },
-  ],
-  imageSrc = "/assets/portrait.jpg"
+  ]
 } = Astro.props;
 ---
 
@@ -75,7 +76,7 @@ const {
       <p class="about-description">{description}</p>
       
       <div class="about-image-wrapper">
-        <img src={imageSrc} alt={name} class="about-image" />
+        <Image src={portrait} alt={name} class="about-image" loading="lazy" />
       </div>
     </div>
 
@@ -200,9 +201,6 @@ const {
     height: 630px;
     display: block;
     border-radius: 20px;
-  }
-
-  img {
     object-fit: cover;
     object-position: bottom;
   }
@@ -331,8 +329,17 @@ const {
       font-size: 2rem;
     }
 
-    img {
-        object-position: center;
+    .about-image-wrapper {
+      width: clamp(20rem, 25vw, 100rem);
+      height: clamp(15rem, 100vh, 70rem);
+      max-width: 100%;
+      max-height: fit-content;
+      margin: 0 auto;
+    }
+
+    .about-image {
+      object-fit: cover;
+      object-position: center;
     }
   }
 

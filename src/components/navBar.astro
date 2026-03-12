@@ -4,12 +4,12 @@ import ThemeToggle from '../components/themeToggle.astro';
 const navLinks = [
     { label: 'HOME', href: '#home' },
     { label: 'ABOUT ME', href: '#about' },
-    { label: 'SKILLS', href: '#' },
-    { label: 'BLOG', href: '#' },
+    { label: 'SKILLS', href: '/' },
+    { label: 'BLOG', href: '/' },
 ];
 
 const isCurrentPage = (href: string) => {
-    if (href.startsWith('#')) return false;
+    if (href.startsWith('#') || href.startsWith('/')) return false;
     let pathname = Astro.url.pathname;
     if (pathname.at(0) !== '/') pathname = '/' + pathname;
     if (pathname.at(-1) !== '/') pathname += '/';
@@ -47,7 +47,7 @@ const isCurrentPage = (href: string) => {
                 </ul>
             </nav>
 
-            <a href="#" class="btn-cta desktop-cta" id="openTalk">LET'S TALK</a>
+            <a href="/" class="btn-cta desktop-cta" id="openTalk">LET'S TALK</a>
 
             <ThemeToggle />
 
@@ -543,7 +543,7 @@ const isCurrentPage = (href: string) => {
 
         const overlay = talkModal.querySelector(".talk-modal-overlay");
 
-        const openModal = function(e) {
+        const openModal = function(e: any) {
             if (e) e.preventDefault();
             talkModal.classList.add("active");
             document.body.style.overflow = "hidden";
@@ -584,13 +584,13 @@ const isCurrentPage = (href: string) => {
             return;
         }
 
-        function showToast(message, success) {
-            toast.textContent = message;
-            toast.style.borderColor = success ? "#22c55e" : "#ef4444";
-            toast.classList.add("show");
+        function showToast(message: string, success: boolean) {
+            toast!.textContent = message;
+            toast!.style.borderColor = success ? "#22c55e" : "#ef4444";
+            toast!.classList.add("show");
 
             setTimeout(function() {
-                toast.classList.remove("show");
+                toast!.classList.remove("show");
             }, 3000);
         }
 

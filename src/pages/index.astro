@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/baseLayout.astro";
 import Hero from "../components/hero.astro";
 import About from "../components/about.astro";
+import Skills from "../components/skills.astro";
 
 const titles = ["Mark Andrew", "a Developer", "a Freelancer", "a Tutor", "a Virtual Assistant"];
 ---
@@ -9,12 +10,10 @@ const titles = ["Mark Andrew", "a Developer", "a Freelancer", "a Tutor", "a Virt
 <BaseLayout>
   <Hero
     titles={titles}
-    tagline="“There is nothing so useless as doing efficiently that which should not be done at all.” -Peter Drucker"
+    tagline="If you're doing something, do it at 100% or don't do it at all."
     align="start"
     tags={["Developer", "Freelancer", "Tutor", "Virtual Assistant"]}
   />
-  
-  <About 
-    imageSrc="/assets/about.jpg"
-  />
+  <About />
+  <Skills />
 </BaseLayout>

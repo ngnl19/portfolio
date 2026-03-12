@@ -1,4 +1,7 @@
 ---
+import Image from 'astro/components/Image.astro';
+import portrait from '../assets/portrait.png';
+
 interface Props {
   titles: string[];
   tagline?: string;
@@ -36,7 +39,7 @@ const { align = "center", tagline, titles, tags = [] } = Astro.props;
     </div>
 
     <div class="hero-image">
-      <img src="/assets/portrait.png" alt="Hero Image" />
+      <Image src={portrait} alt='portrait' loading="eager" />
     </div>
 
   </div>
@@ -268,17 +271,17 @@ document.addEventListener("DOMContentLoaded", () => {
   let titleIndex = 0;
 
   const container = document.querySelector(".typing-container") as HTMLElement;
-  const longestTitle = titles.reduce((a, b) => a.length > b.length ? a : b);
+  const longestTitle = titles.reduce((a: string, b: string) => a.length > b.length ? a : b);
   measure.textContent = longestTitle;
   
   if (container) {
     container!.style.width = measure!.offsetWidth + "px";
   }
 
-  function animateText(text) {
+  function animateText(text: string) {
     let iteration = 0;
     const interval = setInterval(() => {
-      el.textContent = text
+      el!.textContent = text
         .split("")
         .map((letter, index) => {
           if (index < iteration) return text[index];
